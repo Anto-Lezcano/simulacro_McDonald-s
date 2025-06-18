@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
-
+import { Document, Types } from "mongoose";
+import { Coupon } from "src/coupons/schema/coupon.schema";
 export type UserDocument = User & Document;
 @Schema()
 export class User {
@@ -15,10 +15,12 @@ export class User {
 
   @Prop({ default: 0 })
   points: number;
-  @Prop({ default: "local" }) // 'local' o 'google'
+  @Prop({ default: "local" })
   provider: "local" | "google";
 
-  @Prop() // solo para Google
+  @Prop({ type: Types.ObjectId, ref: "Coupon" })
+  coupons: Types.ObjectId[];
+  @Prop()
   googleId?: string;
 
   @Prop()

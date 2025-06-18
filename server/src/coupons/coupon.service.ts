@@ -12,6 +12,7 @@ import { CouponActivateDto } from "./dto/coupon.activate.dto";
 import { Types } from "mongoose";
 import { InjectConnection } from "@nestjs/mongoose";
 import { Connection } from "mongoose";
+import { isValidObjectId } from "mongoose";
 
 @Injectable()
 export class CouponService {
@@ -22,7 +23,7 @@ export class CouponService {
   ) {}
 
   async renderCouponActive() {
-    const coupons = await this.couponModel.find({ activo: true });
+    const coupons = await this.couponModel.find();
     if (!coupons) {
       throw new NotFoundException("No hay cupones activos");
     }
@@ -30,24 +31,22 @@ export class CouponService {
   }
 
   async CouponService(dto: CouponActivateDto) {
-    // 1. Buscar el cupón
     const coupon = await this.couponModel.findOne({ codigo: dto.code_coupon });
+    console.log(dto);
     if (!coupon) {
       throw new NotFoundException("El cupón no existe");
     }
 
-    // 2. Validar si está activo
-    if (!coupon.activo) {
-      throw new BadRequestException("El cupón no está activo");
-    }
-
-    // 3. Validar fecha de expiración
     if (coupon.expiracion < new Date()) {
       throw new BadRequestException("El cupón ha expirado");
     }
 
-    // 4. Buscar usuario y verificar si ya lo canjeó
-    const user = await this.userModel.findById(dto.id_user);
+    let user;
+    if (isValidObjectId(dto.id_user)) {
+      user = await this.userModel.findById(dto.id_user);
+    } else {
+      user = await this.userModel.findOne({ email: dto.id_user });
+    }
     if (!user) {
       throw new NotFoundException("Usuario no encontrado");
     }
@@ -63,26 +62,13 @@ export class CouponService {
       );
     }
 
-    // 5. Usar transacción para evitar inconsistencias
-    const session = await this.connection.startSession();
-    session.startTransaction();
+    user.coupons.push(coupon._id);
+    await user.save();
 
-    try {
-      user.coupons.push(couponId);
-      await user.save({ session });
-
-      await session.commitTransaction();
-      session.endSession();
-
-      return {
-        message: "Cupón canjeado exitosamente",
-        descuento: coupon.descuento,
-        expiracion: coupon.expiracion,
-      };
-    } catch (error) {
-      await session.abortTransaction();
-      session.endSession();
-      throw new InternalServerErrorException("Error al canjear el cupón");
-    }
+    return {
+      message: `Cupón canjeado exitosamente`,
+      descuento: coupon.descuento,
+      expiracion: coupon.expiracion,
+    };
   }
 }

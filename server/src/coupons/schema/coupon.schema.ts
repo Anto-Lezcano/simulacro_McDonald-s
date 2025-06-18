@@ -18,13 +18,7 @@ export class Coupon {
   @Prop({ required: true })
   expiracion: Date;
 
-  @Prop({ default: false })
-  esFamiliar: boolean;
-
-  @Prop({ default: true })
-  activo: boolean;
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: "Combo" }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: "Combos" }], default: [] })
   combos: Types.ObjectId[];
 }
 

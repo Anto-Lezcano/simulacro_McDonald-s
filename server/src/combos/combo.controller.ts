@@ -9,4 +9,9 @@ export class ComboController {
   getCombos() {
     return this.comboService.getCombos();
   }
+
+  @Get("coupon")
+  getComboForCoupon() {
+    return this.comboService.getComboForCoupon();
+  }
 }

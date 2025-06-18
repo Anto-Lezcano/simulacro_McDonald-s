@@ -18,7 +18,15 @@ export class User {
   @Prop({ default: "local" })
   provider: "local" | "google";
 
-  @Prop({ type: Types.ObjectId, ref: "Coupon" })
+  @Prop({
+    type: [
+      {
+        type: Types.ObjectId,
+        ref: "Coupon",
+      },
+    ],
+    default: [],
+  })
   coupons: Types.ObjectId[];
   @Prop()
   googleId?: string;

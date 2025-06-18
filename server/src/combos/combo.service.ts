@@ -29,6 +29,13 @@ export class ComboService {
 
     const comboList: ComboWithDiscount[] = [];
 
+    console.log("COMBOS", combos);
+    for (const combo of combos) {
+      const couponsForCombo = await this.couponModel.find({
+        combos: { $in: [combo._id as Types.ObjectId] },
+      });
+    }
+
     for (const combo of combos) {
       const couponsForCombo = await this.couponModel.find({
         combos: { $in: [combo._id as Types.ObjectId] },
@@ -37,7 +44,6 @@ export class ComboService {
       const validCoupon = couponsForCombo.find(
         (c) => new Date(c.expiracion) > new Date()
       );
-      console.log(couponsForCombo);
 
       if (validCoupon) {
         const precioOriginal = combo.precio;

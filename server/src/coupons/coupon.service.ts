@@ -13,13 +13,16 @@ import { Types } from "mongoose";
 import { InjectConnection } from "@nestjs/mongoose";
 import { Connection } from "mongoose";
 import { isValidObjectId } from "mongoose";
+import { CouponCanjeado, CouponCanjeadoDocument } from "./schema/coupon.canjes";
 
 @Injectable()
 export class CouponService {
   constructor(
     @InjectModel(Coupon.name) private couponModel: Model<CouponDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    @InjectConnection() private readonly connection: Connection
+    @InjectConnection() private readonly connection: Connection,
+    @InjectModel(CouponCanjeado.name)
+    private cuponCanjeadoModel: Model<CouponCanjeadoDocument>
   ) {}
 
   async renderCouponActive() {
@@ -44,24 +47,16 @@ export class CouponService {
     let user;
     if (isValidObjectId(dto.id_user)) {
       user = await this.userModel.findById(dto.id_user);
-    } else {
-      user = await this.userModel.findOne({ email: dto.id_user });
     }
     if (!user) {
       throw new NotFoundException("Usuario no encontrado");
     }
 
-    const couponId = coupon._id as Types.ObjectId;
-    const alreadyRedeemed = user.coupons.some((c) =>
-      (c as Types.ObjectId).equals(couponId)
-    );
-
-    if (alreadyRedeemed) {
-      throw new BadRequestException(
-        "Este cupón ya fue canjeado por el usuario"
-      );
-    }
-
+    const cuponCanjeado = new this.cuponCanjeadoModel({
+      user: user._id,
+      cupon: coupon._id,
+    });
+    await cuponCanjeado.save();
     user.coupons.push(coupon._id);
     await user.save();
 

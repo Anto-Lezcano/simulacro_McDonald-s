@@ -1,18 +1,11 @@
 import { motion } from "framer-motion";
 import { Star, Ticket, UserCircle } from "lucide-react";
 import { ReactElement } from "react";
+import { useUser } from "../contexts/UserContext";
 
-interface UserProfileCardProps {
-  name: string;
-  points: number;
-  coupons: number;
-}
+export default function UserProfileCard(): ReactElement {
+  const { name, points, coupons } = useUser();
 
-export default function UserProfileCard({
-  name,
-  points,
-  coupons,
-}: UserProfileCardProps): ReactElement {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

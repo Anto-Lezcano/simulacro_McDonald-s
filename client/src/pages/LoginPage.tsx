@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 import RegisterPrompt from "../components/RegisterPrompt";
+import { Helmet } from "react-helmet-async";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -49,6 +50,28 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-5 relative">
+      <Helmet>
+        <title>Iniciar Sesión | McRewards</title>
+        <meta
+          name="description"
+          content="Inicia sesión en McRewards para acceder a tus promociones exclusivas, puntos y cupones. ¡Disfrutá de los beneficios de ser parte!"
+        />
+        <meta
+          name="keywords"
+          content="McDonald's, iniciar sesión, login, McRewards, promociones McDonald's, puntos, cupones"
+        />
+        <meta property="og:title" content="Iniciar Sesión | McRewards" />
+        <meta
+          property="og:description"
+          content="Accedé a tu cuenta de McRewards para disfrutar de promociones y beneficios."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://tu-sitio.com/login" />
+        <meta
+          property="og:image"
+          content="https://tu-sitio.com/imagen-seo-login.jpg"
+        />
+      </Helmet>
       <ToastContainer />
       <div className="absolute inset-0 z-0">
         <img

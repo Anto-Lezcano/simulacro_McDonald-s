@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 import { ShoppingBag, Flame } from "lucide-react";
 import { ReactElement } from "react";
+import foto1 from "../assets/imagenes de mcdonal/big mac combo.jpg";
+import foto2 from "../assets/imagenes de mcdonal/cajita feliz.jpg";
+import foto3 from "../assets/imagenes de mcdonal/cajita feliz 2.jpg";
+import foto4 from "../assets/imagenes de mcdonal/oreo.jpg";
 
 interface Combo {
   id: number;
@@ -20,7 +24,7 @@ const combos: Combo[] = [
     price: "$7.99",
     originalPrice: "$9.49",
     isPopular: true,
-    image: "combo1",
+    image: foto1,
   },
   {
     id: 2,
@@ -28,7 +32,7 @@ const combos: Combo[] = [
     description: "McNífica, papas y bebida",
     price: "$6.49",
     originalPrice: "$7.99",
-    image: "combo2",
+    image: foto2,
   },
   {
     id: 3,
@@ -36,7 +40,7 @@ const combos: Combo[] = [
     description: "Hamburguesa, juguete y bebida pequeña",
     price: "$4.99",
     originalPrice: "$5.49",
-    image: "combo3",
+    image: foto3,
   },
   {
     id: 4,
@@ -45,7 +49,7 @@ const combos: Combo[] = [
     price: "$8.49",
     originalPrice: "$10.49",
     isPopular: true,
-    image: "combo4",
+    image: foto4,
   },
 ];
 
@@ -69,7 +73,7 @@ export default function CombosSection(): ReactElement {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-neutral-800 rounded-xl overflow-hidden border border-neutral-700 hover:border-yellow-400 transition-colors group relative"
+            className="bg-neutral-800 rounded-xl overflow-hidden border border-neutral-700 hover:border-yellow-400 transition-colors group relative shadow-lg"
           >
             {combo.isPopular && (
               <div className="absolute top-3 left-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 z-10">
@@ -78,11 +82,12 @@ export default function CombosSection(): ReactElement {
               </div>
             )}
 
-            <div className="h-40 bg-gradient-to-br from-yellow-500/20 to-red-500/20 flex items-center justify-center relative">
-              <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10"></div>
-              <span className="text-6xl font-bold text-white opacity-20">
-                M
-              </span>
+            <div className="relative">
+              <img
+                src={combo.image}
+                alt={combo.name}
+                className="w-full h-40 object-cover"
+              />
               <div className="absolute bottom-0 right-0 bg-black/70 text-white px-3 py-1 text-sm font-bold rounded-tl-lg">
                 {combo.price}
                 <span className="ml-2 text-xs text-neutral-400 line-through">

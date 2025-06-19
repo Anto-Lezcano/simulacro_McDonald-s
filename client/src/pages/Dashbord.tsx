@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Gift, Zap, ShoppingCart, Tag, Menu as MenuIcon } from "lucide-react";
 import { useUser } from "../contexts/UserContext";
+import { Helmet } from "react-helmet-async";
 
 export default function Dashboard(): ReactElement {
   const [activeTab, setActiveTab] = useState<
@@ -21,7 +22,6 @@ export default function Dashboard(): ReactElement {
   >("promociones");
   const { points, coupons } = useUser();
 
-  // Efecto para sugerir canje si los puntos son bajos
   useEffect(() => {
     if (points < 300 && activeTab !== "canjear") {
       const timer = setTimeout(() => {
@@ -31,7 +31,6 @@ export default function Dashboard(): ReactElement {
     }
   }, [points, activeTab]);
 
-  // Efecto para sugerir compras si hay cupones
   useEffect(() => {
     if (coupons > 0 && activeTab !== "comprar") {
       const timer = setTimeout(() => {
@@ -105,14 +104,32 @@ export default function Dashboard(): ReactElement {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-900 to-neutral-800 text-white">
+      <Helmet>
+        <title>Dashboard | McRewards</title>
+        <meta
+          name="description"
+          content="Explora promociones exclusivas, gana puntos y canjea tus cupones en McRewards. ¡Disfruta de beneficios en cada compra!"
+        />
+        <meta
+          name="keywords"
+          content="McDonald's, promociones, cupones, puntos, beneficios, menú McDonald's, McRewards"
+        />
+        <meta property="og:title" content="Dashboard | McRewards" />
+        <meta
+          property="og:description"
+          content="Explora promociones, gana puntos y canjea cupones en McRewards. ¡Aprovechá las mejores ofertas!"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://tu-sitio.com/dashboard" />
+        <meta
+          property="og:image"
+          content="https://tu-sitio.com/imagen-seo-dashboard.jpg"
+        />
+      </Helmet>
       <Navbar />
       <MenuSidebar />
-
-      {/* Contenido principal con margen para el sidebar */}
       <div className="pt-16 pl-64 container mx-auto px-4 pb-8">
-        {/* Navegación por pestañas mejorada */}
         <div className="mb-8">
-          {/* Versión desktop - Grid responsive */}
           <div className="hidden sm:grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -139,15 +156,11 @@ export default function Dashboard(): ReactElement {
                             : "text-yellow-400 group-hover:text-white"
                         }`}
                       />
-
-                      {/* Badge de notificación */}
                       {tab.badge && (
                         <span className="absolute -top-2 -right-2 bg-yellow-400 text-black text-xs font-bold rounded-full min-w-[20px] h-5 flex items-center justify-center px-1">
                           {tab.badge}
                         </span>
                       )}
-
-                      {/* Indicador de notificación */}
                       {tab.notification && (
                         <span className="absolute -top-1 -right-1 bg-red-500 w-3 h-3 rounded-full animate-pulse"></span>
                       )}
@@ -162,16 +175,12 @@ export default function Dashboard(): ReactElement {
                     >
                       {tab.label}
                     </span>
-
-                    {/* Highlight especial */}
                     {tab.highlight && (
                       <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full animate-pulse">
                         ¡Oferta!
                       </span>
                     )}
                   </div>
-
-                  {/* Efecto de brillo en hover */}
                   {!isActive && (
                     <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-yellow-500/0 via-yellow-500/5 to-yellow-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   )}
@@ -179,8 +188,6 @@ export default function Dashboard(): ReactElement {
               );
             })}
           </div>
-
-          {/* Versión mobile - Lista vertical compacta */}
           <div className="sm:hidden space-y-2">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -233,8 +240,6 @@ export default function Dashboard(): ReactElement {
             })}
           </div>
         </div>
-
-        {/* Contenido dinámico con animación */}
         <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 20 }}
@@ -267,7 +272,6 @@ export default function Dashboard(): ReactElement {
         </motion.div>
       </div>
 
-      {/* Notificación flotante para puntos bajos */}
       {points < 300 && activeTab !== "canjear" && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}

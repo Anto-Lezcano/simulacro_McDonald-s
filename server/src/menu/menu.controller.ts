@@ -8,7 +8,6 @@ export class MenuController {
   @Get("/:tipo")
   async getMenusByType(@Param("tipo") tipo: string) {
     try {
-      console.log("Tipo recibido:", tipo);
       const menus = await this.menuService.getMenus(tipo);
       return {
         success: true,

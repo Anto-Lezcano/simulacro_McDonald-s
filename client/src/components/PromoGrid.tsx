@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
 import { Clock, Flame, Tag } from "lucide-react";
+import foto1 from "../assets/imagenes de mcdonal/big mac combo.jpg";
+import foto2 from "../assets/imagenes de mcdonal/cajita feliz.jpg";
+import foto3 from "../assets/imagenes de mcdonal/cajita feliz 2.jpg";
+import foto4 from "../assets/imagenes de mcdonal/oreo.jpg";
 
 const promotions = [
   {
@@ -9,6 +13,7 @@ const promotions = [
     price: "$5.99",
     timeLeft: "2 días",
     isHot: true,
+    image: foto1,
   },
   {
     id: 2,
@@ -16,6 +21,7 @@ const promotions = [
     description: "Incluye juguete sorpresa para los más pequeños",
     price: "$3.49",
     timeLeft: "5 días",
+    image: foto2,
   },
   {
     id: 3,
@@ -23,6 +29,7 @@ const promotions = [
     description: "Hamburguesa, papas, bebida y juguete",
     price: "$4.25",
     timeLeft: "1 día",
+    image: foto3,
   },
   {
     id: 4,
@@ -31,6 +38,7 @@ const promotions = [
     price: "$2.99",
     timeLeft: "3 días",
     isHot: true,
+    image: foto4,
   },
 ];
 
@@ -49,14 +57,14 @@ export default function PromoGrid() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="bg-neutral-700/50 rounded-2xl overflow-hidden border border-neutral-600 hover:border-yellow-400 transition-colors group"
+            className="bg-neutral-700/50 rounded-2xl overflow-hidden border border-neutral-600 hover:border-yellow-400 transition-colors group shadow-lg"
           >
             <div className="relative">
-              <div className="h-40 bg-gradient-to-br from-yellow-500 to-red-500 flex items-center justify-center">
-                <span className="text-4xl font-bold text-white opacity-30">
-                  M
-                </span>
-              </div>
+              <img
+                src={promo.image}
+                alt={promo.title}
+                className="w-full h-40 object-cover"
+              />
 
               {promo.isHot && (
                 <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
